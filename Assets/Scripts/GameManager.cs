@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     {
         if (_instance && _instance != this)
         {
+           
             Destroy(gameObject);
         }
         else

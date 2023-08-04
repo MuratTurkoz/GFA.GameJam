@@ -1,7 +1,5 @@
-
 using UnityEngine;
-
-using Input = UnityEngine.Input;
+using UnityEngine.Splines;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _verticalSpeed;
 
     [SerializeField] private float _jumpForce;
+
     [SerializeField]
     private float maxLeft;
     [SerializeField]
@@ -21,26 +20,58 @@ public class PlayerMovement : MonoBehaviour
 
     private float speed = 20.0f;
     [SerializeField] private float turnSpeed = 20.0f;
-   public static float horizontalInput;
+    public static float horizontalInput;
     public static float verticalInput;
     [SerializeField] private Rigidbody _rigidbody;
-    
+    public Transform[] controlPoints;
 
+    private Vector3 _firstPosition;
+    private Vector3 _lastPosition;
+    private Vector3 _directionVector;
     private Vector3 _velocity = new Vector3();
+    private InputManager _inputManager;
+    private Vector3 _mousePos;
 
     private bool _isGrounded;
 
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _inputManager = GetComponent<InputManager>();
+
     }
 
     private void Update()
     {
         if (_isGrounded)
         {
-            horizontalInput = UnityEngine.Input.GetAxis("Horizontal" + inputID);
-            verticalInput = Input.GetAxis("Vertical" + inputID);
+
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            //    _firstPosition = Input.mousePosition;
+            //}
+            //if (Input.GetMouseButtonUp(0))
+            //{
+            //    _lastPosition = Input.mousePosition;
+            //    _directionVector = _lastPosition - _firstPosition;
+            //    _inputManager.MoveCharacter(_directionVector);
+            //    _inputManager.RotateCharcter(_directionVector);
+            //}
+
+
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+            //_mousePos = Input.mousePosition;
+            //Debug.Log(_mousePos);
+            //transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed *_mousePos.x );
+            //if (Input.GetMouseButton(0))
+            //{
+
+            //}
+            //if (Input.GetButtonUp("Horizantal"))
+            //{
+
+            //}
 
             //transform.Translate(Vector3.right * Time.deltaTime * speed * verticalInput);
 
@@ -93,7 +124,10 @@ public class PlayerMovement : MonoBehaviour
         _isGrounded = Physics.Raycast(_rigidbody.position, Vector3.down, 1.05f);
         if (_isGrounded)
         {
-            _rigidbody.velocity = new Vector3(horizontalInput*_horizontalSpeed, _rigidbody.position.y, verticalInput*_forwardSpeed);
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.velocity = new Vector3(horizontalInput * _horizontalSpeed, _rigidbody.position.y, verticalInput * _forwardSpeed);
+            //Debug.Log(_rigidbody.velocity);
+
 
         }
     }

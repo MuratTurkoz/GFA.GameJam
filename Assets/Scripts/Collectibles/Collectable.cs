@@ -10,6 +10,7 @@ public abstract class Collectable : MonoBehaviour
         {
             OnCollected();
             gameObject.SetActive(false);
+            Debug.Log(gameObject.name);
         }
     }
     public abstract void OnCollected();
